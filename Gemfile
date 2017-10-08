@@ -24,6 +24,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'shoulda'
   gem 'factory_girl_rails', '~> 4.0'
+  gem 'faker'
 end
 
 # Use Puma as the app server
@@ -45,6 +46,8 @@ gem 'thor', '0.19.1'
 gem 'bootstrap-sass'
 
 gem 'devise'
+
+gem 'pundit'
 
 group :development do
   gem 'listen', '~> 3.0.5'

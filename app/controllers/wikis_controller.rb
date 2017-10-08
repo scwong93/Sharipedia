@@ -1,4 +1,8 @@
 class WikisController < ApplicationController
+
+  before_action :authenticate_user
+
+
   def index
     @wikis = Wiki.all
   end
@@ -9,10 +13,12 @@ class WikisController < ApplicationController
 
   def new
     @wiki = Wiki.new
+    authorize @wiki
   end
 
   def edit
     @wiki = Wiki.find(params[:id])
+    authorize @wiki
   end
 
   def create
@@ -20,6 +26,7 @@ class WikisController < ApplicationController
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
     @wiki.private = params[:wiki][:private]
+    authorize @wiki
 
     if @wiki.save
       flash[:notice] = "Wiki was saved."
@@ -35,6 +42,7 @@ class WikisController < ApplicationController
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
     @wiki.private = params[:wiki][:private]
+    authorize @wiki
 
     if @wiki.save
       flash[:notice] = "Wiki was updated."
@@ -54,6 +62,14 @@ class WikisController < ApplicationController
         flash.now[:alert] = "There was an error deleting the wiki. Please try again."
         render :show
       end
+    end
+  end
+
+  private
+  def authenticate_user
+    unless current_user
+      flash.now[:alert] = "You must be a member to perform this action."
+      redirect_to wikis_path
     end
   end
 end

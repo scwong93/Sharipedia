@@ -1,4 +1,6 @@
 require 'rails_helper'
+include RandomData
+include WikisHelper
 
 RSpec.describe WikisController, type: :controller do
   let(:my_wiki) {Wiki.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false)}
@@ -73,7 +75,7 @@ RSpec.describe WikisController, type: :controller do
 
   describe "POST create" do
     it "increases the number of Wiki by 1" do
-      expect{ wiki :create, params: { title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false }.to change(Wiki,:count).by(1)
+      expect{ wiki :create, params: { title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false}}.to change(Wiki,:count).by(1)
     end
 
     it "assigns the new wiki to @wiki" do
