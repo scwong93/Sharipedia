@@ -18,10 +18,17 @@
            Signed in as: <strong><%= current_user.email %></strong> |
            <ul class="nav nav-tabs">
              <li><%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> - <%= link_to "Sign Out", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
+             <% if current_user.standard? %>
+                <li><%= link_to 'Upgrade Your Account', new_charge_path, :class => 'navbar-link' %></li>
+             <% elsif current_user.premium? %>
+                <li><%= link_to 'Downgrade Your Account', new_downgrade_path, :class => 'navbar-link' %></li>
+             <% end %>
         <% else %>
               <li><%= link_to "Sign Up", new_user_registration_path, :class => 'navbar-link'  %> - </li>
               <li><%= link_to "Sign In", new_user_session_path, :class => 'navbar-link'  %></li>
+            </div>
         <% end %>
+      </div>
     <%= yield %>
   </body>
 </html>

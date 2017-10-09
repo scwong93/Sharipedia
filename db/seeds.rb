@@ -4,7 +4,9 @@ require 'faker'
   User.create!(
     email: Faker::Internet.email,
     password: Faker::Internet.password,
-    standard: true
+    standard: true,
+    admin: false,
+    premium: false
   )
 end
 users = User.all
