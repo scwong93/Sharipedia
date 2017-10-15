@@ -4,9 +4,7 @@ require 'faker'
   User.create!(
     email: Faker::Internet.email,
     password: Faker::Internet.password,
-    standard: true,
-    admin: false,
-    premium: false
+    role: :standard
   )
 end
 users = User.all
@@ -15,7 +13,8 @@ users = User.all
   Wiki.create!(
   title: Faker::Space.galaxy,
   body: Faker::MostInterestingManInTheWorld.quote,
-  private: false
+  private: false,
+  user: users.sample
   )
 end
 wikis = Wiki.all

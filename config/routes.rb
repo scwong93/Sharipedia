@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :charges, only: [:new, :create]
 
-  resources :downgrade, only: [:new, :create]
+  resources :downgrade, only: [:destroy]
 
   get 'about' => 'welcome#about'
 

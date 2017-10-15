@@ -1,8 +1,7 @@
 class DowngradeController < ApplicationController
-  def create
-    current_user.update_attribute(:standard, true)
-    current_user.update_attribute(:premium, false)
-    flash[:notice] = "You have downgraded your account."
+  def destroy
+    flash[:notice] = "You have downgraded your account and your wikis are now publicized."
+    current_user.standard!
     redirect_to root_path
   end
 end

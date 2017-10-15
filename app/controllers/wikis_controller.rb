@@ -1,6 +1,6 @@
 class WikisController < ApplicationController
 
-  before_action :authenticate_user
+  skip_before_action :authenticate_user!, only: [:index, :show]
 
 
   def index
@@ -22,10 +22,7 @@ class WikisController < ApplicationController
   end
 
   def create
-    @wiki = Wiki.new
-    @wiki.title = params[:wiki][:title]
-    @wiki.body = params[:wiki][:body]
-    @wiki.private = params[:wiki][:private]
+    @wiki = current_user.wikis.new(wiki_params)
     authorize @wiki
 
     if @wiki.save
@@ -39,12 +36,9 @@ class WikisController < ApplicationController
 
   def update
     @wiki = Wiki.find(params[:id])
-    @wiki.title = params[:wiki][:title]
-    @wiki.body = params[:wiki][:body]
-    @wiki.private = params[:wiki][:private]
     authorize @wiki
 
-    if @wiki.save
+    if @wiki.update(wiki_params)
       flash[:notice] = "Wiki was updated."
       redirect_to @wiki
     else
@@ -66,10 +60,8 @@ class WikisController < ApplicationController
   end
 
   private
-  def authenticate_user
-    unless current_user
-      flash.now[:alert] = "You must be a member to perform this action."
-      redirect_to wikis_path
-    end
+
+  def wiki_params
+    params.require(:wiki).permit(:title, :body, :private)
   end
 end
