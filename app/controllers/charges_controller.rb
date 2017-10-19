@@ -28,4 +28,10 @@ class ChargesController < ApplicationController
        amount: 15000
      }
   end
+
+  def downgrade
+    flash[:notice] = "You have downgraded your account and your wikis are now publicized."
+    current_user.standard!
+    redirect_to root_path
+  end
 end

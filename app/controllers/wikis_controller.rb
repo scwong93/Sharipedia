@@ -4,11 +4,24 @@ class WikisController < ApplicationController
 
 
   def index
-    @wikis = Wiki.all
+    @wikis = policy_scope(Wiki)
   end
 
   def show
     @wiki = Wiki.find(params[:id])
+    if current_user.present?
+      collaborators = []
+      @wiki.collaborators.each do |collaborator|
+        collaborators << collaborator.email
+      end
+      unless @wiki.private == false || @wiki.user == current_user || collaborators.include?(current_user.email) || current_user.admin?
+        flash[:alert] = "You do not have access to view this wiki."
+        redirect_to wikis_path
+      end
+    else
+      flash[:alert] = "You do not have access to view this wiki."
+      redirect_to wikis_path
+    end
   end
 
   def new
